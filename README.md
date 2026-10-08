@@ -44,8 +44,23 @@ Escolha uma prática ou dado de teste relevante e explique com suas próprias pa
 
 ## Respostas
 
-Repositório: `<URL_DO_REPOSITÓRIO>`
+Repositório: `https://github.com/huggingface/transformers`
 
-URL TestMiner: `<URL_NO_TESTMINER>`
+URL TestMiner: `https://andrehora.github.io/testminer/#huggingface/transformers`
 
-Explicação: `<SUA_EXPLICAÇÃO>`
+Explicação:
+
+![alt text](image-1.png)
+
+```
+Acredito que um dos testes interessantes desse repositório se encontra dentro da pasta `tests/cli`, no script de nome `test_serve.py`. Achei muito interessante a forma de teste de sistemas rodando em paralelo.
+
+Primeiramente, no uso do transformers no CLI, o comando `transformers serve` serve para subir um servidor local de inferência HTTP. Ele transforma o seu modelo de Inteligência Artificial local em uma API REST ativa, permitindo que você ou outras aplicações façam requisições para gerar texto sem precisar escrever um script em Python para gerenciar o servidor.
+
+Destaco o teste da função `test_concurrent_non_streaming`, que dispara duas requisições ao mesmo tempo e verifica, segundo sua descrição, que: "Two concurrent non-streaming requests should both complete without interference".
+
+Ela inicialmente prepara dois pedidos, ambos com o papel `"user"`, mas com conteúdos diferentes: "Say hello" e "Say goodbye". Prepara também uma lista `results`, inicialmente com dois valores `None`, que receberá as respostas do modelo: a resposta ao primeiro pedido na posição 0 e a resposta ao segundo na posição 1.
+
+Logo em seguida, ela dispara as threads em paralelo usando `concurrent.futures.ThreadPoolExecutor(max_workers=2)` dentro de um bloco `with`. Cada thread cria seu próprio cliente OpenAI apontando para o servidor local e envia um dos pedidos, guardando a resposta do modelo na posição correspondente de `results`.
+
+Em seguida, o teste espera as duas threads terminarem e chama `.result()` em cada uma, para que qualquer erro ocorrido dentro da thread faça o teste falhar. Por fim, verifica que as duas respostas existem e não estão vazias. O objetivo é garantir que o servidor atenda dois clientes simultâneos sem que um atrapalhe o outro.
