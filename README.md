@@ -52,7 +52,6 @@ Explicação:
 
 ![alt text](image-1.png)
 
-```
 Acredito que um dos testes interessantes desse repositório se encontra dentro da pasta `tests/cli`, no script de nome `test_serve.py`. Achei muito interessante a forma de teste de sistemas rodando em paralelo.
 
 Primeiramente, no uso do transformers no CLI, o comando `transformers serve` serve para subir um servidor local de inferência HTTP. Ele transforma o seu modelo de Inteligência Artificial local em uma API REST ativa, permitindo que você ou outras aplicações façam requisições para gerar texto sem precisar escrever um script em Python para gerenciar o servidor.
